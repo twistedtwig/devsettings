@@ -14,22 +14,22 @@ In the example above you can see that there is a global section which has three 
 
 No valid override found
 -----------------------
-
+```c#
 prop1 val1
 prop2 val2
-
+```
 JonSettings override found
 --------------------------
-
+```c#
 prop1 val1
 prop2 val3
-
+```
 SimonSettings override found
 --------------------------
-
+```c#
 prop1 val5
 prop2 val6
-
+```
 
 There are four ways to identity a individual override settings:
 
