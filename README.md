@@ -56,7 +56,7 @@ Here is the settings class it is trying to populate
 
 Below is what values will be returned in the DevSettings class.
 
-###No valid override found
+#####No valid override found
 
 | Property	| Value	|
 ------------| --------|
@@ -64,7 +64,7 @@ Below is what values will be returned in the DevSettings class.
 | SomeCount	| 5	|
 | SomePath	| C:\temp\mypath	|
 
-###JonSettings override found
+#####JonSettings override found
 
 | Property	| Value	|
 ------------|---------
@@ -72,7 +72,7 @@ Below is what values will be returned in the DevSettings class.
 | SomeCount	| 6	|
 | SomePath	| C:\temp\mypath	|
 
-###SimonSettings override found
+#####SimonSettings override found
 
 | Property	| Value	|
 ------------|---------
@@ -101,26 +101,26 @@ There are four ways to identity a individual override settings:
 - Machine Name
 - Chaining 
 
-###Environmental Variable Override
+#####Environmental Variable Override
 
 if an environmental variable key is found it will take the value and use this as the field to search for an override name.
 
-###Appsetting Override
+#####Appsetting Override
 
 The appsetting works similarly, it will look for an appsetting with the given key and use its value as the search for an override name.
 
-###Machine Name Override
+#####Machine Name Override
 
 If machine name is set as an override it will look for the matching override name for the machine name.
 
-###Chaining Override
+#####Chaining Override
 
 Chaining uses all the above to try and find a valid override.  It will use them in order. Environmental Variable, Appsetting then machine name.  The first valid override found will be used, it will not use multiple overrides.
 
 
 ##An example situation
 
-You have a development team of four, and test environment and live environment.  Two of the developers (Jon and Dave) use SQL Server, the other two use SQL Express.  Jon has his temp directory on the E drive whilst evryone else uses teh default.  The Test and Live environments have their own settings.
+You have a development team of four, and test environment and live environment.  Two of the developers (Jon and Dave) use SQL Server, the other two use SQL Express.  Jon has his temp directory on the E drive whilst everyone else uses the default.  The Test and Live environments have their own settings.
 
 There are a number of ways a team can identity how their settings are found.  The whole team / environments have to work the same way.  If an environment variable is used each developer would need to set theirs before their application is started.  The benefit of this is there will not be any merge conflicts and someone can switch between setting profiles quickly.  
 
@@ -128,13 +128,61 @@ Machine name can be used, this works well for the local development team, assumi
 
 The app settings can cause merge issues if people set the key and check their config file in.  The app setting is best used for the test and live enviornments as a configuration transform can be used during the build process to set the appsetting to what ever is required.
 
+In the example above Dave can use all the default values, Jon needs to override his temp path and the other two developers need to use a different connection string.
+
 Below is an example configuration file described as above.  Below that is the code that is used to load the settings.  As a side note I would recommend wrapping the code below in a service that would abstract out the use of this, incase you wish to change it, also to allow for the service to be used as a singleton if wanted so that the data is only loaded once.
 
 
 ```xml
-insert xml config code here
+<developersettings>
+    <Configs>
+      <ConfigurationGroup name="global">
+        <ValueItems>
+          <ValueItem key="ConnectionStringName" value="FullSql"/>
+          <ValueItem key="TempPath" value="C:\temp\mypath"/>
+        </ValueItems>
+      </ConfigurationGroup>
+      
+      <ConfigurationGroup name="JonSettings">
+        <ValueItems>
+          <ValueItem key="TempPath" value="E:\workingDir\temp" />
+        </ValueItems>
+      </ConfigurationGroup>
+
+      <ConfigurationGroup name="sqlExpress">
+        <ValueItems>
+          <ValueItem key="ConnectionStringName" value="sqlExpress" />
+        </ValueItems>
+      </ConfigurationGroup>
+      
+    </Configs>
+  </developersettings>
 ```
 
 ```c# 
-insert C# code to load the configuration here
+    public class DevSettings
+    {
+        public string ConnectionStringName { get; set; }
+        public string TempPath { get; set; }
+    }
+    
+    public class SettingsService 
+    {
+        public DevSettings Get()
+        {
+            //By default it will use chaining and try its best to find an override
+            var config = new ConfigurationLoader<DevSettings>();
+            
+            //if no key given you are using machine name only as appsettings and environmental Variable need to know what key to use
+            return config.Create(); //a string can be passed into the constructor as a key for either appsettings or environmental variable.
+            
+            /**
+            in the example above if an environmental variable was set for "Devkeys" Jon could set the value to be "JonSettings" to get the temp path override.
+            The other two developers could set theirs to "sqlExpress".  
+            Dave would not need to as no override is required.
+            **/
+        }
+        
+    }
+
 ```
