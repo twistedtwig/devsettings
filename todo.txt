@@ -1,0 +1,9 @@
+
+ - set up some tests / test project to ensure it loads things in each situation correctly
+
+
+
+  
+ - add readme.md
+
+ - add nuget setup
