@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <version>$version$</version>
+    <authors>Jon Hawkins</authors>
+    <owners>Jon Hawkins</owners>
+    <id>DeveloperSettings</id>
+    <title>HoH - Developer Settings</title>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Allows development teams to have shared and custom configuration settings to avoid Merge conflicts and pain</description>
+    <copyright>Copyright Jon Hawkins 2015</copyright>
+    <projectUrl>https://github.com/twistedtwig/devsettings</projectUrl>
+  </metadata>
+ <files>
+    <file src="ConfigurationSetup\bin\Release\ConfigurationSetup.dll" target="lib\net45" />
+    <file src="ConfigurationSetup\bin\Release\ConfigurationSetup.pdb" target="lib\net45"  />       
+
+    <file src="ConfigurationSetup\bin\Release\CustomConfigurations.dll" target="lib\net45" />
+    <file src="ConfigurationSetup\bin\Release\CustomConfigurations.pdb" target="lib\net45"  />       
+  </files>
+</package>
