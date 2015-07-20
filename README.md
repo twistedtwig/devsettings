@@ -1,5 +1,4 @@
-# devsettings
-Developer settings for .Net
+# Developer Settings
 
 The principle idea of the application is to allow multiple developers in a team share a configuration file and avoid merge conflicts when their local environments differ.  For example one dev may use SQL express and another use Full SQL.  They would have different connection strings.  Developer settings allows the system to have both of the connection strings (with different names) defined, whilst in the settings section they can identity which connection string name is theirs.
 
@@ -13,11 +12,6 @@ The settings are stored in a custom configuration section in the configuration f
   <configSections>
     <section name="developersettings" type="CustomConfigurations.ConfigurationSectionLoader, CustomConfigurations"/>
   </configSections>
-
-  <appSettings>
-    <add key="myoverridekey" value="jonDevAppSettingTest" />
-  </appSettings>
-  
 
   <developersettings>
     <Configs>
@@ -40,12 +34,6 @@ The settings are stored in a custom configuration section in the configuration f
           <ValueItem key="SomeCount" value="7" />
         </ValueItems>
       </ConfigurationGroup>
-
-      <ConfigurationGroup name="mymachineName">
-        <ValueItems>
-          <ValueItem key="SomePath" value="E:\work" />
-        </ValueItems>
-      </ConfigurationGroup>
       
     </Configs>
   </developersettings>
@@ -66,8 +54,9 @@ Here is the settings class it is trying to populate
     }
 ```
 
-No valid override found
------------------------
+Below is what values will be returned in the DevSettings class.
+
+###No valid override found
 
 | Property	| Value	|
 ------------| --------|
@@ -75,8 +64,7 @@ No valid override found
 | SomeCount	| 5	|
 | SomePath	| C:\temp\mypath	|
 
-JonSettings override found
---------------------------
+###JonSettings override found
 
 | Property	| Value	|
 ------------|---------
@@ -84,8 +72,7 @@ JonSettings override found
 | SomeCount	| 6	|
 | SomePath	| C:\temp\mypath	|
 
-SimonSettings override found
---------------------------
+###SimonSettings override found
 
 | Property	| Value	|
 ------------|---------
@@ -114,29 +101,24 @@ There are four ways to identity a individual override settings:
 - Machine Name
 - Chaining 
 
-Environmental Variable Override
--------------------------------
+###Environmental Variable Override
 
 if an environmental variable key is found it will take the value and use this as the field to search for an override name.
 
-Appsetting Override
--------------------------------
+###Appsetting Override
 
 The appsetting works similarly, it will look for an appsetting with the given key and use its value as the search for an override name.
 
-Machine Name Override
--------------------------------
+###Machine Name Override
 
 If machine name is set as an override it will look for the matching override name for the machine name.
 
-Chaining Override
--------------------------------
+###Chaining Override
 
 Chaining uses all the above to try and find a valid override.  It will use them in order. Environmental Variable, Appsetting then machine name.  The first valid override found will be used, it will not use multiple overrides.
 
 
-An example situation
---------------------
+##An example situation
 
 You have a development team of four, and test environment and live environment.  Two of the developers (Jon and Dave) use SQL Server, the other two use SQL Express.  Jon has his temp directory on the E drive whilst evryone else uses teh default.  The Test and Live environments have their own settings.
 
