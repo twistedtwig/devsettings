@@ -6,7 +6,51 @@ The principle idea of the application is to allow multiple developers in a team 
 The settings are stored in a custom configuration section in the configuration file.  A global section must be declared.  After that zero to many individual sections can be declared after that.
 
 ```xml
--- insert XML example here.
+<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+
+
+  <configSections>
+    <section name="developersettings" type="CustomConfigurations.ConfigurationSectionLoader, CustomConfigurations"/>
+  </configSections>
+
+  <appSettings>
+    <add key="myoverridekey" value="jonDevAppSettingTest" />
+  </appSettings>
+  
+
+  <developersettings>
+    <Configs>
+      <ConfigurationGroup name="global">
+        <ValueItems>
+          <ValueItem key="ConnectionStringName" value="valueabc"/>
+          <ValueItem key="SomeCount" value="5"/>
+          <ValueItem key="SomePath" value="C:\temp\mypath"/>
+        </ValueItems>
+      </ConfigurationGroup>
+      
+      <ConfigurationGroup name="JonSettings">
+        <ValueItems>
+          <ValueItem key="SomeCount" value="6" />
+        </ValueItems>
+      </ConfigurationGroup>
+
+      <ConfigurationGroup name="SimonSettings">
+        <ValueItems>
+          <ValueItem key="SomeCount" value="7" />
+        </ValueItems>
+      </ConfigurationGroup>
+
+      <ConfigurationGroup name="mymachineName">
+        <ValueItems>
+          <ValueItem key="SomePath" value="E:\work" />
+        </ValueItems>
+      </ConfigurationGroup>
+      
+    </Configs>
+  </developersettings>
+  
+</configuration>
 ```
 
 
@@ -14,27 +58,41 @@ In the example above you can see that there is a global section which has three 
 
 Here is the settings class it is trying to populate
 ```C#
-settings class here
+    public class DevSettings
+    {
+        public string ConnectionStringName { get; set; }
+        public int SomeCount { get; set; }
+        public string SomePath { get; set; }
+    }
 ```
 
 No valid override found
 -----------------------
-```c#
-prop1 val1
-prop2 val2
-```
+
+| Property	| Value	|
+---------------------
+| ConnectionStringName	| valueabc	|
+| SomeCount	| 5	|
+| SomePath	| C:\temp\mypath	|
+
 JonSettings override found
 --------------------------
-```c#
-prop1 val1
-prop2 val3
-```
+
+| Property	| Value	|
+---------------------
+| ConnectionStringName	| valueabc	|
+| SomeCount	| 6	|
+| SomePath	| C:\temp\mypath	|
+
 SimonSettings override found
 --------------------------
-```c#
-prop1 val5
-prop2 val6
-```
+
+| Property	| Value	|
+---------------------
+| ConnectionStringName	| valueabc	|
+| SomeCount	| 7	|
+| SomePath	| C:\temp\mypath	|
+
 
 When creating the dev settings configuration loader you can specify a number of parameters:
 
