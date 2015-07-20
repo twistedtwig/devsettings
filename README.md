@@ -70,7 +70,7 @@ No valid override found
 -----------------------
 
 | Property	| Value	|
----------------------
+------------| --------|
 | ConnectionStringName	| valueabc	|
 | SomeCount	| 5	|
 | SomePath	| C:\temp\mypath	|
@@ -79,7 +79,7 @@ JonSettings override found
 --------------------------
 
 | Property	| Value	|
----------------------
+------------|---------
 | ConnectionStringName	| valueabc	|
 | SomeCount	| 6	|
 | SomePath	| C:\temp\mypath	|
@@ -88,7 +88,7 @@ SimonSettings override found
 --------------------------
 
 | Property	| Value	|
----------------------
+------------|---------
 | ConnectionStringName	| valueabc	|
 | SomeCount	| 7	|
 | SomePath	| C:\temp\mypath	|
